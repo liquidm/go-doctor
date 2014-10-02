@@ -31,4 +31,5 @@ Configure it using following cmd line flags:
   -statsmem=true: show mem stats
 ```
 
-From now on, every time you press <C-c> go-doctor will dump some statistics and create profiling files. Hit <C-c> twice to exit your program.
+
+From now on, every time you press C-c go-doctor will dump some statistics and create profiling files. Hit C-c twice to exit your program.
