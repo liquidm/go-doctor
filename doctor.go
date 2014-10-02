@@ -8,11 +8,13 @@ import (
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
+	"strconv"
 	"time"
 )
 
 type Doctor struct {
 	startTime          time.Time
+	writes             int
 	memprofFile        string
 	cpuprofFile        string
 	lastSignal         *time.Time
@@ -114,9 +116,9 @@ func (this *Doctor) processSignal(s chan os.Signal) {
 }
 
 func (this *Doctor) startCPUProfile() {
-	logger.Debugf("Starting CPUProfil...")
-
-	f, err := os.Create(this.cpuprofFile)
+	logger.Debugf("Starting CPUProfile...")
+	this.writes = this.writes + 1
+	f, err := os.Create(this.cpuprofFile + "_" + strconv.Itoa(this.writes))
 
 	if err == nil {
 		pprof.StartCPUProfile(f)
