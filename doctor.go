@@ -87,31 +87,35 @@ func (this *Doctor) processSignal(s chan os.Signal) {
 			os.Exit(2)
 		}
 
-		this.writeGCStats()
-		this.writeGoroutineStats()
-		this.writeMemStats()
-
-		if this.memprofFile != "" {
-			f, err := os.Create(this.memprofFile)
-			if err == nil {
-				pprof.WriteHeapProfile(f)
-				logger.Infof(">> writing heap profile to %v", this.memprofFile)
-			} else {
-				logger.Errorf("couldn't write to %v", this.memprofFile)
-			}
-		}
-
-		if this.cpuprofFile != "" {
-			logger.Infof(">> writing cpu samples to %v", this.cpuprofFile)
-			pprof.StopCPUProfile()
-			this.startCPUProfile()
-		}
+		this.Update()
 
 		logger.Infof("hit C-c again within a second to exit")
 
 		signalTime := time.Now()
 
 		this.lastSignal = &signalTime
+	}
+}
+
+func (this *Doctor) Update() {
+	this.writeGCStats()
+	this.writeGoroutineStats()
+	this.writeMemStats()
+
+	if this.memprofFile != "" {
+		f, err := os.Create(this.memprofFile)
+		if err == nil {
+			pprof.WriteHeapProfile(f)
+			logger.Infof(">> writing heap profile to %v", this.memprofFile)
+		} else {
+			logger.Errorf("couldn't write to %v", this.memprofFile)
+		}
+	}
+
+	if this.cpuprofFile != "" {
+		logger.Infof(">> writing cpu samples to %v", this.cpuprofFile)
+		pprof.StopCPUProfile()
+		this.startCPUProfile()
 	}
 }
 
@@ -128,7 +132,7 @@ func (this *Doctor) startCPUProfile() {
 	}
 }
 
-func StartWithFlags() {
+func StartWithFlags() *Doctor {
 	doctor := new(Doctor)
 
 	enable := flag.Bool("doctor", false, "enable doctor")
@@ -148,9 +152,11 @@ func StartWithFlags() {
 	doctor.showGoroutineStats = *statsgoroutine
 
 	if !doctor.enable {
-		return
+		return doctor
 	}
 	doctor.Start()
+
+	return doctor
 }
 
 func (this *Doctor) Start() {
