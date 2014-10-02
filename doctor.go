@@ -102,6 +102,7 @@ func (this *Doctor) processSignal(s chan os.Signal) {
 		if this.cpuprofFile != "" {
 			logger.Infof(">> writing cpu samples to %v", this.cpuprofFile)
 			pprof.StopCPUProfile()
+			this.startCPUProfile()
 		}
 
 		logger.Infof("hit C-c again within a second to exit")
