@@ -128,12 +128,12 @@ func (this *Doctor) startCPUProfile() {
 func StartWithFlags() {
 	doctor := new(Doctor)
 
-	enable := flag.Bool("doctor", false, "enable doctor?")
+	enable := flag.Bool("doctor", false, "enable doctor")
 	cpu := flag.String("cpu", "prof.cprof", "write cpu profile to this file")
 	mem := flag.String("mem", "prof.mprof", "write mem profile to this file")
-	statsgc := flag.Bool("statsgc", true, "show GC stats?")
-	statsmem := flag.Bool("statsmem", true, "show mem stats?")
-	statsgoroutine := flag.Bool("statsgoroutine", true, "show goroutine stats?")
+	statsgc := flag.Bool("statsgc", true, "show GC stats")
+	statsmem := flag.Bool("statsmem", true, "show mem stats")
+	statsgoroutine := flag.Bool("statsgoroutine", true, "show goroutine stats")
 
 	flag.Parse()
 
