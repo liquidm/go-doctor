@@ -10,7 +10,7 @@ Import go-doctor:
 
 ```go
 import(
-  "github.com/liquidm/go-doctor
+  "github.com/liquidm/go-doctor"
 )
 ```
 
