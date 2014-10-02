@@ -23,6 +23,7 @@ type Doctor struct {
 	showGCStats        bool
 	showMemStats       bool
 	showGoroutineStats bool
+	callbacks          []func(*Doctor)
 }
 
 func (this *Doctor) writeGCStats() {
@@ -112,6 +113,10 @@ func (this *Doctor) Update() {
 		}
 	}
 
+	for _, callback := range this.callbacks {
+		callback(this)
+	}
+
 	if this.cpuprofFile != "" {
 		logger.Infof(">> writing cpu samples to %v", this.cpuprofFile)
 		pprof.StopCPUProfile()
@@ -157,6 +162,10 @@ func StartWithFlags() *Doctor {
 	doctor.Start()
 
 	return doctor
+}
+
+func (this *Doctor) RegisterCallback(callback func(*Doctor)) {
+	this.callbacks = append(this.callbacks, callback)
 }
 
 func (this *Doctor) Start() {
