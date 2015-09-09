@@ -2,7 +2,7 @@ package doctor
 
 import (
 	"flag"
-	"github.com/tideland/goas/v3/logger"
+	"github.com/tideland/golib/logger"
 	"os"
 	"os/signal"
 	"runtime"
